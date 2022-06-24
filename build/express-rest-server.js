@@ -34,13 +34,13 @@ let products;
 let customers;
 function load() {
     products = new Array();
-    products.push(new product_1.Product(1, "IPhone 12", 80000, "6.1-inch (15.5 cm diagonal) Super Retina XDR display, A14 Bionic chip"));
-    products.push(new product_1.Product(2, "LG OLED TV", 60000, "4K Ultra HD Smart OLED TV"));
-    products.push(new product_1.Product(3, "Sony HT-RT3 Real 5.1ch Dolby Digital", 35000, "Soundbar Home Theatre System"));
-    products.push(new product_1.Product(4, "Lenovo ThinkPad E470", 88000, "Lenovo ThinkPad E470"));
-    products.push(new product_1.Product(5, "Logitech headphone 390", 4500, "Headphones"));
-    products.push(new product_1.Product(6, "Amazon Echo Show 10", 7000, "HD smart display with motion, premium sound and Alexa (Black)"));
-    products.push(new product_1.Product(7, "Samsung Galaxy Watch Active 2", 15000, "With Super AMOLED Display"));
+    products.push(new product_1.Product(1, "IPhone 12", 80000, "6.1-inch (15.5 cm diagonal) Super Retina XDR display, A14 Bionic chip", "/images/iphone13.png"));
+    products.push(new product_1.Product(2, "LG OLED TV", 60000, "4K Ultra HD Smart OLED TV", "/images/lgoled.png"));
+    products.push(new product_1.Product(3, "Sony HT-RT3 Real 5.1ch Dolby Digital", 35000, "Soundbar Home Theatre System", "/images/sony.png"));
+    products.push(new product_1.Product(4, "Lenovo ThinkPad E470", 88000, "Lenovo ThinkPad E470", "/images/lenovo.png"));
+    products.push(new product_1.Product(5, "Logitech headphone 390", 4500, "Headphones", "/images/logitech.png"));
+    products.push(new product_1.Product(6, "Amazon Echo Show 10", 7000, "HD smart display with motion, premium sound and Alexa (Black)", "/images/echo.png"));
+    products.push(new product_1.Product(7, "Samsung Galaxy Watch 4 Classic", 30000, "With Super AMOLED Display", "/images/watch.png"));
     customers = new Array();
     customers.push({ id: 1, name: "Google", location: "Bangalore" });
     customers.push({ id: 2, name: "Microsoft", location: "Hyderabad" });
@@ -52,6 +52,7 @@ function load() {
     customers.push({ id: 8, name: "Hyundai", location: "Chennai" });
 }
 load();
+app.use(express_1.default.static('public'));
 app.use(body_parser_1.default.json());
 //Middleware(intercepts the request==> preprocessing)
 app.use((req, resp, next) => {
