@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -11,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -28,7 +42,7 @@ const product_1 = require("./model/product");
 const cors_1 = __importDefault(require("cors"));
 const authController = __importStar(require("./controller/AuthController"));
 const process_1 = require("process");
-const app = express_1.default();
+const app = (0, express_1.default)();
 const PORT = process.env.PORT || process_1.argv[2] || 9000;
 let products;
 let customers;
@@ -60,7 +74,7 @@ app.use((req, resp, next) => {
     next();
 });
 //Enable CORS
-app.use(cors_1.default());
+app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use("/secure_products", authController.authorizeRequest);
 app.use("/secure_customers", authController.authorizeRequest);
@@ -258,6 +272,30 @@ app.delete("/customers/:id", function (req, resp) {
     if (index != -1) {
         customers.splice(index, 1);
         resp.json(null);
+    }
+    else {
+        resp.status(404);
+        resp.json(null);
+    }
+});
+app.get("/customers/:id", function (req, resp) {
+    console.log("Invoking /customers/" + req.params.id + " GET request....");
+    var id = parseInt(req.params.id);
+    var index = customers.findIndex((cust) => cust.id === id);
+    if (index != -1) {
+        resp.json(customers[index]);
+    }
+    else {
+        resp.status(404);
+        resp.json(null);
+    }
+});
+app.get("/secure_customers/:id", function (req, resp) {
+    console.log("Invoking /customers/" + req.params.id + " GET request....");
+    var id = parseInt(req.params.id);
+    var index = customers.findIndex((cust) => cust.id === id);
+    if (index != -1) {
+        resp.json(customers[index]);
     }
     else {
         resp.status(404);

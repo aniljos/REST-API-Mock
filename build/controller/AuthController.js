@@ -16,7 +16,7 @@ function loadUsers() {
     users.push({ name: "abc", password: "abc@123" });
 }
 loadUsers();
-exports.loginAction = (req, resp) => {
+const loginAction = (req, resp) => {
     console.log("loginAction");
     //validate the credentials
     //generate a JWT token 
@@ -34,7 +34,8 @@ exports.loginAction = (req, resp) => {
         resp.sendStatus(401);
     }
 };
-exports.authorizeRequest = (req, resp, next) => {
+exports.loginAction = loginAction;
+const authorizeRequest = (req, resp, next) => {
     // authorization : Bearer sjgsjfhgsjdgh77657656ggfgfhgfhfh
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.toString().split(' ')[1];
@@ -51,7 +52,8 @@ exports.authorizeRequest = (req, resp, next) => {
         next();
     });
 };
-exports.refreshToken = (req, resp) => {
+exports.authorizeRequest = authorizeRequest;
+const refreshToken = (req, resp) => {
     console.log("refreshToken", req.body);
     const refeshToken = req.body.token;
     console.log(refeshToken);
@@ -67,3 +69,4 @@ exports.refreshToken = (req, resp) => {
         return resp.json({ accessToken: accsessToken });
     });
 };
+exports.refreshToken = refreshToken;

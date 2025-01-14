@@ -326,6 +326,39 @@ app.delete("/customers/:id", function(req, resp){
     }
 })
 
+app.get("/customers/:id", function(req, resp){
+
+    console.log("Invoking /customers/" + req.params.id +  " GET request....");
+    var id = parseInt( req.params.id);
+    
+    var index = customers.findIndex((cust) => cust.id === id);
+  
+    if(index != -1){
+         
+         resp.json(customers[index]);
+    }else{
+        
+        resp.status(404);
+        resp.json(null);
+    }
+})
+app.get("/secure_customers/:id", function(req, resp){
+
+    console.log("Invoking /customers/" + req.params.id +  " GET request....");
+    var id = parseInt( req.params.id);
+    
+    var index = customers.findIndex((cust) => cust.id === id);
+  
+    if(index != -1){
+         
+         resp.json(customers[index]);
+    }else{
+        
+        resp.status(404);
+        resp.json(null);
+    }
+})
+
 app.delete("/secure_customers/:id", function(req, resp){
 
     console.log("Invoking /customers/" + req.params.id +  " DELETE request....");
