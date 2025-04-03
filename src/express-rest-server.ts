@@ -8,6 +8,7 @@ import cors from 'cors';
 import * as authController from './controller/AuthController';
 import { Customer } from './model/customer';
 import { argv } from 'process';
+import { TodoItem } from './model/todoItem';
 
 
 const app = express();
@@ -19,6 +20,8 @@ const PORT = process.env.PORT || argv[2] || 9000;
 let products: Array<Product>;
 
 let customers: Array<Customer>;
+
+let todoItems: Array<TodoItem>;
 
 function load(){
     products = new Array<Product>();
@@ -39,6 +42,12 @@ function load(){
     customers.push({id: 6, name: "Tata Motors", location: "Pune"});
     customers.push({id: 7, name: "Wipro", location: "Bangalore"});
     customers.push({id: 8, name: "Hyundai", location: "Chennai"});
+
+    todoItems = new Array<TodoItem>();
+    todoItems.push(new TodoItem(1, "Call Home", false));
+    todoItems.push(new TodoItem(2, "Learn React", false));
+    todoItems.push(new TodoItem(3, "Register for TMM Marathon", false));   
+   
 
 }
 load();
@@ -469,6 +478,18 @@ app.put("/secure_customers", function(req, resp){
     
 
 })
+
+app.get("/todoItems", (req, resp) => {
+    resp.json(todoItems);
+});
+app.post("/todoItems", (req, resp) => {
+    const data = req.body;
+    todoItems = [...data];
+    resp.status(200);
+    resp.json(null);
+})
+
+
 
 
 app.listen(PORT, () => {

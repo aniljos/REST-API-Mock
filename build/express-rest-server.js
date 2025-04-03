@@ -42,10 +42,12 @@ const product_1 = require("./model/product");
 const cors_1 = __importDefault(require("cors"));
 const authController = __importStar(require("./controller/AuthController"));
 const process_1 = require("process");
+const todoItem_1 = require("./model/todoItem");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || process_1.argv[2] || 9000;
 let products;
 let customers;
+let todoItems;
 function load() {
     products = new Array();
     products.push(new product_1.Product(1, "IPhone 12", 80000, "6.1-inch (15.5 cm diagonal) Super Retina XDR display, A14 Bionic chip", "/images/iphone13.png"));
@@ -64,6 +66,10 @@ function load() {
     customers.push({ id: 6, name: "Tata Motors", location: "Pune" });
     customers.push({ id: 7, name: "Wipro", location: "Bangalore" });
     customers.push({ id: 8, name: "Hyundai", location: "Chennai" });
+    todoItems = new Array();
+    todoItems.push(new todoItem_1.TodoItem(1, "Call Home", false));
+    todoItems.push(new todoItem_1.TodoItem(2, "Learn React", false));
+    todoItems.push(new todoItem_1.TodoItem(3, "Register for TMM Marathon", false));
 }
 load();
 app.use(express_1.default.static('public'));
@@ -384,6 +390,15 @@ app.put("/secure_customers", function (req, resp) {
         resp.status(200);
         resp.json(null);
     }
+});
+app.get("/todoItems", (req, resp) => {
+    resp.json(todoItems);
+});
+app.post("/todoItems", (req, resp) => {
+    const data = req.body;
+    todoItems = [...data];
+    resp.status(200);
+    resp.json(null);
 });
 app.listen(PORT, () => {
     console.log(`REST API running on port ${PORT} with process id: ${process.pid}`);
